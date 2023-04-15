@@ -8,89 +8,123 @@
 ```plantuml
 @startuml
 ' Логическая модель данных в варианте UML Class Diagram (альтернатива ER-диаграмме).
-namespace ShoppingCart {
+namespace ConferenceSystem {
 
- class ShoppingCart
+ class Speaker
  {
   id : string
-  createDate : datetime
-  updateDate : datetime
-  customer : Customer
-  price : ShoppingCartPrice
-  cartItems : CartItem[]
+  name : string
+  contactInfo : string
+  bio : string
+  presentations : Presentation[]
  }
 
- class ShoppingCartPrice
- {
-  type : CartItemPrice
- }
- class CartItemPrice
- {
-  type : CartItemPriceType
- }
-
- enum CartPriceType
- {
-  total
-  grandTotal
-  offeringDiscount
-  couponsDiscount
- }
-
- class CartItem
+ class Presentation
  {
   id : string
-  quantity : int
-  offering : Offering
-  relationship : CartItemRelationShip[]
-  price : CartItemPrice[]
-  status : CartItemStatus
+  title : string
+  abstract : string
+  presentationFile : string
+  status : PresentationStatus
+  speaker : Speaker
+  reviews : Review[]
+  session : Session
  }
 
-  class Customer
+ enum PresentationStatus
+ {
+  NEW
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+ }
+
+ class Reviewer
  {
   id : string
+  name : string
+  contactInfo : string
+  expertiseArea : string
  }
- 
- class Offering
+
+ class Review
  {
   id : string
-  isQuantifiable : boolean
-  actionType : OfferingActionType
-  validFor : ValidFor
+  rating : int
+  comments : string
+  recommendations : string
+  presentation : Presentation
+  reviewer : Reviewer
  }
-  
- class ProductSpecificationRef
+
+ class Session
  {
   id : string
+  date : datetime
+  startTime : datetime
+  duration : int
+  presentations : Presentation[]
+  track : Track
  }
- 
- ShoppingCart *-- "1..*" ShoppingCartPrice
- ShoppingCartPrice -- CartPriceType
- ShoppingCart *-- "*" CartItem
- CartItem *-- "*" CartItemPrice
- CartItemPrice -- CartPriceType
- CartItem *-- "1" Offering
- Offering *-- "1" ProductSpecificationRef
- Offering *-- "0..1" ProductConfiguration
- ShoppingCart *-- "1" Customer
-}
 
-namespace Ordering {
- ProductOrder *-- OrderItem
- OrderItem *-- Product
- Product *-- ProductSpecificationRef
- ProductOrder *-- Party
-}
+ class Track
+ {
+  id : string
+  name : string
+  description : string
+  sessions : Session[]
+ }
 
-namespace ProductCatalog {
- ShoppingCart.ProductSpecificationRef ..> ProductSpecification : ref
- Ordering.ProductSpecificationRef ..> ProductSpecification : ref
-}
+ class Schedule
+ {
+  id : string
+  date : datetime
+  tracks : Track[]
+  sessions : Session[]
+ }
 
-namespace CX {
- ShoppingCart.Customer ..> Customer : ref
- Ordering.Party ..> Customer : ref
+ class Broadcast
+ {
+  id : string
+  broadcastUrl : string
+  status : BroadcastStatus
+  presentation : Presentation
+ }
+
+ enum BroadcastStatus
+ {
+  WAITING
+  ACTIVE
+  FINISHED
+ }
+
+ class Feedback
+ {
+  id : string
+  rating : int
+  comments : string
+  presentation : Presentation
+  participant : Participant
+ }
+
+ class Participant
+ {
+  id : string
+  name : string
+  contactInfo : string
+  registrationData : string
+ }
+
+ Speaker *-- "0..*" Presentation
+ Presentation *-- "0..*" Review
+ Reviewer *-- "0..*" Review
+ Session *-- "0..*" Presentation
+ Track *-- "0..*" Session
+ Schedule *-- "0..*" Track
+ Schedule *-- "0..*" Session
+ Broadcast *-- "1" Presentation
+ Feedback *-- "1" Presentation
+ Feedback *-- "1" Participant
 }
 @enduml
 ```
