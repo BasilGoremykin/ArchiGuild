@@ -9,48 +9,63 @@
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-AddElementTag("microService", $shape=EightSidedShape(), $bgColor="CornflowerBlue", $fontColor="white", $legendText="microservice")
-AddElementTag("storage", $shape=RoundedBoxShape(), $bgColor="lightSkyBlue", $fontColor="white")
+Person(attendee, "Участник", "Участник конференции")
+Person(speaker, "Докладчик", "Докладчик на конференции")
 
-Person(customer, "Покупатель", "B2C клиент")
+System_Boundary(c, "Платформа конференций") {
+  Container(web_app, "Веб-приложение", "JavaScript, React", "Веб-интерфейс для платформы конференций")
+  Container(mobile_app, "Мобильное приложение", "React Native", "Мобильный интерфейс для платформы конференций")
+  Container(api_gateway, "API Gateway", "Java, Spring Cloud Gateway", "Входная точка для всех входящих запросов")
+  
+  Container(auth_service, "Сервис аутентификации", "Java, Spring-Security", "Обрабатывает аутентификацию и авторизацию пользователей")
 
-System_Boundary(c, "MTS Shop Lite") {
-   Container(app, "Клиентское веб-приложение", "html, JavaScript, Angular", "Портал интернет-магазина")
-   Container(offering_service, "Product Offering Service", "Java, Spring Boot", "Сервис управления продуктовым предложением", $tags = "microService")      
-   ContainerDb(offering_db, "Product Catalog", "PostgreSQL", "Хранение продуктовых предложений", $tags = "storage")
-   
-   Container(ordering_service, "Product Ordering Service", "Golang, nginx", "Сервис управления заказом", $tags = "microService")      
-   ContainerDb(ordering_db, "Order Inventory", "MySQL", "Хранение заказов", $tags = "storage")
-    
-   Container(message_bus, "Message Bus", "RabbitMQ", "Транспорт для бизнес-событий")
-   Container(audit_service, "Audit Service", "C#/.NET", "Сервис аудита", $tags = "microService")      
-   Container(audit_store, "Audit Store", "Event Store", "Хранение произошедших события для аудита", $tags = "storage")
+  Container(speaker_service, "Сервис докладчиков", "Java, Spring Boot", "Управляет профилями спикеров и презентациями")
+  ContainerDb(speaker_db, "База данных спикеров", "PostgreSQL", "Хранит профили спикеров и информацию о презентациях")
+
+  Container(schedule_service, "Сервис расписания", "Java, Spring Boot", "Управляет расписанием конференции")
+  ContainerDb(schedule_db, "База данных расписания", "PostgreSQL", "Хранит данные расписания конференции")
+
+  Container(review_service, "Сервис отзывов", "Scala, Play", "Собирает и управляет отзывами о презентациях")
+  ContainerDb(review_db, "База данных отзывов", "PostgreSQL", "Хранит отзывы о презентациях")
+  
+  Container(video_service, "Сервис видео", "Java, Quarkus", "Обрабатывает хранение видео и активные трансляции")
+  ContainerDb(video_db, "База данных видео", "PostgreSQL", "Хранит видеозаписи докладов")
 }
 
-System_Ext(logistics_system, "msLogistix", "Система управления доставкой товаров.")  
+Rel(attendee, web_app, "Получает доступ к платформе конференций через")
+Rel(attendee, mobile_app, "Получает доступ к платформе конференций через")
+Rel(speaker, web_app, "Получает доступ к платформе конференций через")
+Rel(speaker, mobile_app, "Получает доступ к платформе конференций через")
 
-Lay_R(offering_service, ordering_service)
-Lay_R(offering_service, logistics_system)
-Lay_D(offering_service, audit_service)
+Rel(web_app, api_gateway, "HTTP", "REST")
+Rel(mobile_app, api_gateway, "HTTP", "REST")
 
-Rel(customer, app, "Оформление заказа", "HTTPS")
-Rel(app, offering_service, "Выбор продуктов для корзины(Продукт):корзина", "JSON, HTTPS")
+Rel(api_gateway, auth_service, "gRPC")
+Rel(auth_service, speaker_service, "gRPC")
+Rel(auth_service, schedule_service, "gRPC")
+Rel(auth_service, review_service, "gRPC")
+Rel(auth_service, video_service, "gRPC")
 
-Rel(offering_service, message_bus, "Отправка заказа(Корзина)", "AMPQ")
-Rel(offering_service, offering_db, "Сохранение продуктового предложения(Продуктовая спецификация)", "JDBC, SQL")
+Rel(speaker_service, speaker_db, "JDBC, Spring-Data")
+Rel(schedule_service, schedule_db, "JDBC, Spring-Data")
+Rel(review_service, review_db, "JDBC, SQL")
+Rel(video_service, video_db, "JDBC, SQL")
 
-Rel(ordering_service, message_bus, "Получение заказа: Корзина", "AMPQ")
-Rel_U(audit_service, message_bus, "Получение события аудита(Событие)", "AMPQ")
-
-Rel(ordering_service, ordering_db, "Сохранение заказа(Заказ)", "SQL")
-Rel(audit_service, audit_store, "Сохранение события(Событие)")
-Rel(ordering_service, logistics_system, "Доставка(Наряд на доставку):Трекинг", "JSON, HTTP")  
-
-SHOW_LEGEND()
 @enduml
 ```
 
 ## Список компонентов
-| Компонент             | Роль/назначение                  |
-|:----------------------|:---------------------------------|
-| *Название компонента* | *Описание назначения компонента* |
+| Компонент               | Роль/назначение                                         |
+|:------------------------|:--------------------------------------------------------|
+| Веб-приложение          | Веб-интерфейс для платформы конференций                 |
+| Мобильное приложение    | Мобильный интерфейс для платформы конференций           |
+| API Gateway             | Входная точка для всех входящих запросов                |
+| Сервис аутентификации   | Обрабатывает аутентификацию и авторизацию пользователей |
+| Сервис докладчиков      | Управляет профилями спикеров и презентациями            | 
+| База данных докладчиков | Хранит профили спикеров и информацию о презентациях     |
+| Сервис расписания       | Управляет расписанием конференции                       |
+| База данных расписания  | Хранит данные расписания конференции                    |
+| Сервис отзывов          | Собирает и управляет отзывами о презентациях            |
+| База данных отзывов     | Хранит отзывы о презентациях                            |
+| Сервис видео            | Обрабатывает хранение видео и активные трансляции       |
+| База данных видео       | Хранит видеозаписи докладов                             |
