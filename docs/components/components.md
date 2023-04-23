@@ -25,7 +25,7 @@ System_Boundary(c, "Платформа конференций") {
   Container(schedule_service, "Сервис расписания", "Java, Spring Boot", "Управляет расписанием конференции")
   ContainerDb(schedule_db, "База данных расписания", "PostgreSQL", "Хранит данные расписания конференции")
 
-  Container(review_service, "Сервис отзывов", "Scala, Play", "Собирает и управляет отзывами о презентациях")
+  Container(review_service, "Сервис отзывов", "Scala, Spark", "Собирает и управляет отзывами о презентациях")
   ContainerDb(review_db, "База данных отзывов", "PostgreSQL", "Хранит отзывы о презентациях")
   
   Container(video_service, "Сервис видео", "Java, Quarkus", "Обрабатывает хранение видео и активные трансляции")
