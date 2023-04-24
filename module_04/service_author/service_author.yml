@@ -42,6 +42,7 @@ components:
     Author_id:
       description: The unique identifier of author
       type: string
+      example: 100
 
     Author:
       type: object
@@ -50,14 +51,19 @@ components:
           $ref: '#/components/schemas/Author_id'
         birth_date:
           type: string
+          example: 01.01.2023
         title:
           type: string
+          example: The Title
         email:
           type: string
+          example: ivanov@mail.ru
         first_name:
           type: string
+          example: Ivan
         last_name:
           type: string
+          example: Ivanov
 
     Error:
       type: object
@@ -67,3 +73,4 @@ components:
         message:
           description: A human readable error message
           type: string
+          example: An exception occured on server

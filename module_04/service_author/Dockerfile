@@ -11,6 +11,7 @@ RUN pip3 install -r requirements.txt
 
 COPY service_author.py /
 COPY ExportJson.json /
+COPY service_author.yml /
 
 ENTRYPOINT ["python3", "-m", "uvicorn" , "service_author:app","--host","0.0.0.0","--reload", "--port", "8081"] 
 
