@@ -1,0 +1,46 @@
+INFO:     172.22.0.1:55106 - "GET /presentationsAndAuthor/First%20Presentation HTTP/1.1" 200 OK
+Moore
+WARNING:root:Circuit "get_author" is "closed", failures: 3
+WARNING:root:
+WARNING:root:>>> Error Connecting:
+WARNING:root:>>> Error Connecting:
+CRITICAL:root:Circuit OPEN
+WARNING:root:Circuit "get_author" is "open", failures: 5
+WARNING:root:
+WARNING:root:Circuit "get_author" is "half_open", failures: 5
+WARNING:root:
+WARNING:root:Circuit "get_author" is "half_open", failures: 5
+WARNING:root:
+WARNING:root:Circuit "get_author" is "closed", failures: 0
+WARNING:root:
+WARNING:root:Circuit "get_author" is "closed", failures: 0
+WARNING:root:
+WARNING:root:>>> Error Connecting:
+WARNING:root:>>> Error Connecting:
+WARNING:root:>>> Error Connecting:
+INFO:     172.22.0.1:57726 - "GET /presentationsAndAuthor/First%20Presentation HTTP/1.1" 200 OK
+INFO:     172.22.0.1:61994 - "GET /presentationsAndAuthor/First%20Presentation HTTP/1.1" 500 Internal Server Error
+INFO:     172.22.0.1:57482 - "GET /presentationsAndAuthor/First%20Presentation HTTP/1.1" 500 Internal Server Error
+INFO:     172.22.0.1:57492 - "GET /presentationsAndAuthor/First%20Presentation HTTP/1.1" 500 Internal Server Error
+INFO:     172.22.0.1:57504 - "GET /presentationsAndAuthor/First%20Presentation HTTP/1.1" 500 Internal Server Error
+WARNING:root:>>> Error Connecting:
+WARNING:root:Circuit "get_author" is "closed", failures: 4
+WARNING:root:
+WARNING:root:Circuit "get_author" is "closed", failures: 4
+WARNING:root:
+WARNING:root:Circuit "get_author" is "closed", failures: 4
+WARNING:root:
+WARNING:root:Circuit "get_author" is "closed", failures: 4
+WARNING:root:
+WARNING:root:Circuit "get_author" is "closed", failures: 4
+WARNING:root:
+WARNING:root:>>> Error Connecting:
+INFO:     172.22.0.1:62398 - "GET /presentationsAndAuthor/First%20Presentation HTTP/1.1" 500 Internal Server Error
+WARNING:root:Circuit "get_author" is "half_open", failures: 5
+WARNING:root:
+WARNING:root:Circuit "get_author" is "half_open", failures: 5
+WARNING:root:
+WARNING:root:>>> Error Connecting:
+INFO:     172.22.0.1:59610 - "GET /presentationsAndAuthor/First%20Presentation HTTP/1.1" 500 Internal Server Error
+WARNING:root:Circuit "get_author" is "open", failures: 6
+WARNING:root:
